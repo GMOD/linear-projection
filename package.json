@@ -1,0 +1,25 @@
+{
+  "name": "linear-projection",
+  "version": "0.1.0",
+  "description": "Porjection library focusing on genomic view.",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nathandunn/linear-projection.git"
+  },
+  "keywords": [
+    "linear",
+    "projectiom",
+    "filter",
+    "genomics"
+  ],
+  "author": "Nathan Dunn",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/nathandunn/linear-projection/issues"
+  },
+  "homepage": "https://github.com/nathandunn/linear-projection#readme"
+}
