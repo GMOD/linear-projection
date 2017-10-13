@@ -1,8 +1,10 @@
+import std = require("tstl");
 
-class MultisequenceProjection implements Projection{
+
+class MultiSequenceProjection implements Projection{
 
     // ordered unique set
-    sequences: Array<DiscontinuousProjection>;
+    sequences: std.TreeSet<SequenceRegion>;
 
     constructor(input: object){
     }
