@@ -1,5 +1,6 @@
 /**
- * This is a region of sequence (e.g., a chromosome) that contains projected regions.
+ * This is a region of sequence (e.g., a chromosome) that contains visible regions.
+ * Used to represent folding
  */
 import VisibleRegion from "./VisibleRegion";
 
@@ -44,5 +45,10 @@ export default class SequenceRegion {
     addVisibleRegionByCoordinates(start:number, end: number) {
         let region = new VisibleRegion(start,end);
         this.addVisibleRegion(region);
+    }
+
+    projectValue(number: number) {
+        return number  ;
+
     }
 }

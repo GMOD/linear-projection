@@ -1,0 +1,10 @@
+language: node_js
+node_js:
+  - "iojs"
+  - "8"
+  - "7"
+deploy:
+  on:
+    tags: true
+  api_key:
+    secure: slcVI30Mlif+U8do5yGT1o0jUieHAAIxSiO1RaK5gEYiGW6gLZSXbsdVEhQFAa+ITxRIblMyJjwz9fY5U9EOmE05jKWoUVCZdz+kdMcnVNtsWZs4uErHK71SLmpa1zQ/sL+3kHLxGwIvuMqXNZE0hiUL6ajhGCKwdTVnN2OIuWQc0Yy3MM0j/1SxrLyNitPFOu1GhlOr/FxJDmp1IIWmsTfhI25aZvBK3WO4DqMBbdc5wnOoK9ltwbMoJwAjCFMbT+5K0+cCFuylP/ptb2/BJJ5c24XsH2yiVFZqnFZgu+BY2DxihbPnVe052wsMGOuB2YSEMCdN3YXwn7ahWzkffxxrKbW0DyfjzdOEHg8VN5UoOhpoun7rhfWaifK08P5I87jQcuc3Gl6X6w65y6UzvOlwOK5H25+akr5oXejYblDGfJ3P5HqNoF2YDYIAH28TYvDmbpLSCpmD1TvZ3tMJVWjrlP/jzEVVf8hWLU/c7AJwOVhywKarSQ8qtm3x8dHBMW5/iLJH8gwwiqciuuwJXZi8E/EGVDb37sMu98/jZJvOQlz7UboW9EF/h69KAB3kjrrEFSu2IhZv2VHos9SNC2Bzmjs2oG4YD03K/uMSkSrvswwPGJBpdish8VqZFISOR5Vnr90uI+XTDgLG7gOdewUbxEBFyqCsgC+varrxIo8=

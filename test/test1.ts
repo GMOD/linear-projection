@@ -39,8 +39,9 @@ describe('Overlapping ProjectedRegions should be the union', () => {
         region.addVisibleRegionByCoordinates(4,6) ;
         region.addVisibleRegionByCoordinates(8,9) ;
 
-        // expect(projectedRegion.endLabel).to.equal(end+'');
-        // expect(0).to.equal( region.projectValue(0))
+        expect(region.projectValue(0)).to.equal(0);
+        expect(region.projectValue(1)).to.equal(1);
+        expect(region.projectValue(2)).to.equal(2);
         // expect(1).to.equal( region.projectValue(1))
         // expect(2).to.equal( region.projectValue(2))
 //         expect(AbstractProjection.UNMAPPED_VALUE == region.projectValue(3))
