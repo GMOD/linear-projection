@@ -23,8 +23,12 @@
   },
   "homepage": "https://github.com/nathandunn/linear-projection#readme",
   "devDependencies": {
+    "@types/chai": "^4.0.4",
+    "@types/mocha": "^2.2.43",
     "chai": "^4.1.2",
-    "mocha": "^4.0.1"
+    "mocha": "^4.0.1",
+    "ts-node": "^3.3.0",
+    "types": "^0.1.1"
   },
   "dependencies": {
     "typescript-stl": "^1.5.9"

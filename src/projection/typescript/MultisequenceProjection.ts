@@ -1,4 +1,5 @@
 import std = require("tstl");
+import SequenceRegion from "./SequenceRegion";
 
 
 class MultiSequenceProjection implements Projection{

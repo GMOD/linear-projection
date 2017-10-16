@@ -1,7 +1,9 @@
-
+/**
+ * These represent folds
+ */
 class DiscontinuousProjection implements Projection{
 
-    name: string;
+    // name: string;
     start: number;
     end: number;
 
@@ -9,8 +11,7 @@ class DiscontinuousProjection implements Projection{
     // should be treemap
     regions:Array<ProjectedRegion>;
 
-    constructor(input:object){
-
+    constructor(){
     }
 
     projectValues(reference: string, input: Array<number>) :Array<number>{
