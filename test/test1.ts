@@ -1,7 +1,7 @@
 
 // from MultiSequenceProjectionSpec
 
-import SequenceRegion from '../src/projection/typescript/SequenceRegion';
+import SequenceRegion, {UNMAPPED_REGION} from '../src/projection/typescript/SequenceRegion';
 import { expect } from 'chai';
 import VisibleRegion from "../src/projection/typescript/VisibleRegion";
 // if you used the '@types/mocha' method to install mocha type definitions, uncomment the following line
@@ -42,16 +42,14 @@ describe('Overlapping ProjectedRegions should be the union', () => {
         expect(region.projectValue(0)).to.equal(0);
         expect(region.projectValue(1)).to.equal(1);
         expect(region.projectValue(2)).to.equal(2);
-        // expect(1).to.equal( region.projectValue(1))
-        // expect(2).to.equal( region.projectValue(2))
-//         expect(AbstractProjection.UNMAPPED_VALUE == region.projectValue(3))
-//         expect(3).to.equal( region.projectValue(4))
-//         expect(4).to.equal( region.projectValue(5))
-//         expect(5).to.equal( region.projectValue(6))
-//         expect(AbstractProjection.UNMAPPED_VALUE == region.projectValue(7))
-//         expect(6).to.equal( region.projectValue(8))
-//         expect(7).to.equal( region.projectValue(9))
-//         expect(AbstractProjection.UNMAPPED_VALUE == region.projectValue(10))
+        expect(region.projectValue(3),UNMAPPED_REGION);
+        expect(region.projectValue(4)).to.equal(3);
+        expect(region.projectValue(5)).to.equal(4);
+        expect(region.projectValue(6)).to.equal(5);
+        expect(region.projectValue(7),UNMAPPED_REGION);
+        expect(region.projectValue(8)).to.equal(6);
+        expect(region.projectValue(9)).to.equal(7);
+        expect(region.projectValue(10),UNMAPPED_REGION);
 // )
 //         // in-phase)
 //         expect(new Coordinate(3,4) == region.projectCoordinate(4, 5))

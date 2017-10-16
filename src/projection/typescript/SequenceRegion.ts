@@ -4,6 +4,9 @@
  */
 import VisibleRegion from "./VisibleRegion";
 
+export declare const UNMAPPED_REGION : -1 ;
+
+
 export default class SequenceRegion {
 
     constructor(name: string, start: number, end: number) {
