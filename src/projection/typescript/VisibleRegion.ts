@@ -1,7 +1,7 @@
 /**
  * This was be a visible region implying that either side is the sequence start/the end or a fold start/end.
  */
-export default class ProjectedRegion{
+export default class VisibleRegion{
 
     start: number;
     end: number;

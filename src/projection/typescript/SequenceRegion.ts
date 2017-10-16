@@ -1,8 +1,7 @@
 /**
- * This is a region of sequence that contains sequences.
- * This is basically a sequence.
+ * This is a region of sequence (e.g., a chromosome) that contains projected regions.
  */
-import ProjectedRegion from "./ProjectedRegion";
+import VisibleRegion from "./VisibleRegion";
 
 export default class SequenceRegion {
 
@@ -10,6 +9,7 @@ export default class SequenceRegion {
         this.name = name ;
         this.start = start ;
         this.end = end ;
+        this.regions = new Array<VisibleRegion>();
 
         this.applyDefaults();
     }
@@ -20,13 +20,7 @@ export default class SequenceRegion {
         this.length = this.end - this.start ;
         this.order = 0 ;
 
-        // this.projection = new DiscontinuousProjection();
-        // this.projection.start = this.start;
-        // this.projection.end = this.end;
-
-        let region = new ProjectedRegion(this.start,this.end);
-        this.regions = new Array<ProjectedRegion>();
-        this.regions.push(region);
+        this.addVisibleRegionByCoordinates(this.start,this.end);
     }
 
     // projection: DiscontinuousProjection;
@@ -41,6 +35,14 @@ export default class SequenceRegion {
     length: number;
     name: string;
 
-    regions:Array<ProjectedRegion>;
+    regions:Array<VisibleRegion>;
 
+    addVisibleRegion(region: VisibleRegion) {
+        this.regions.push(region);
+    }
+
+    addVisibleRegionByCoordinates(start:number, end: number) {
+        let region = new VisibleRegion(start,end);
+        this.addVisibleRegion(region);
+    }
 }
