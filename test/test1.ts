@@ -42,14 +42,14 @@ describe('Overlapping ProjectedRegions should be the union', () => {
         expect(region.projectValue(0)).to.equal(0);
         expect(region.projectValue(1)).to.equal(1);
         expect(region.projectValue(2)).to.equal(2);
-        expect(region.projectValue(3),UNMAPPED_REGION);
+        expect(region.projectValue(3)).to.equal(UNMAPPED_REGION);
         expect(region.projectValue(4)).to.equal(3);
         expect(region.projectValue(5)).to.equal(4);
         expect(region.projectValue(6)).to.equal(5);
-        expect(region.projectValue(7),UNMAPPED_REGION);
+        expect(region.projectValue(7)).to.equal(UNMAPPED_REGION);
         expect(region.projectValue(8)).to.equal(6);
         expect(region.projectValue(9)).to.equal(7);
-        expect(region.projectValue(10),UNMAPPED_REGION);
+        expect(region.projectValue(10)).to.equal(UNMAPPED_REGION);
 // )
 //         // in-phase)
 //         expect(new Coordinate(3,4) == region.projectCoordinate(4, 5))
