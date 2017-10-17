@@ -16,16 +16,19 @@ describe('Build Sequence Region Function as a Default', () => {
         expect(region.end).to.equal(end);
         expect(region.name).to.equal(name);
         expect(region.order).to.equal(0);
+        console.log(region.length +' -> ' + (end-start) );
         expect(region.length).to.equal(end - start );
-        expect(region.regions.length).to.equal(1);
+        expect(region.minMap.size()).to.equal(1);
+        expect(region.maxMap.size()).to.equal(1);
 
-        let projectedRegion:VisibleRegion = region.regions[0];
 
-        expect(projectedRegion.start).to.equal(start);
-        expect(projectedRegion.end).to.equal(end);
-        expect(projectedRegion.startLabel).to.equal(start+'');
-        expect(projectedRegion.endLabel).to.equal(end+'');
-
+        let minRegion = region.minMap.find(start).value;
+        let maxRegion = region.maxMap.find(end).value;
+        expect(minRegion.second).to.equal(maxRegion.second);
+        expect(minRegion.second.start).to.equal(start);
+        expect(minRegion.second.end).to.equal(end);
+        expect(minRegion.second.startLabel).to.equal(maxRegion.second.startLabel);
+        expect(minRegion.second.endLabel).to.equal(maxRegion.second.endLabel);
     });
 });
 

@@ -3,7 +3,7 @@
  * Used to represent folding
  */
 import VisibleRegion from "./VisibleRegion";
-import {TreeMultiMap, TreeMap, Pair} from "tstl/lib/tstl";
+import {TreeMap, Pair} from "tstl/lib/tstl";
 
 export declare const UNMAPPED_REGION : -1 ;
 
@@ -21,7 +21,6 @@ export default class SequenceRegion {
         this.name = name ;
         this.start = start ;
         this.end = end ;
-        this.regions = new Array<VisibleRegion>();
 
         this.applyDefaults();
     }
@@ -47,8 +46,6 @@ export default class SequenceRegion {
     length: number;
     name: string;
 
-    regions:Array<VisibleRegion>;
-
     addVisibleRegion(region: VisibleRegion) {
         // region.start,region
         // if (minMap.containsKey(min) && !maxMap.containsKey(max)) {
@@ -60,7 +57,7 @@ export default class SequenceRegion {
 
 
         this.minMap.push(new Pair<number,VisibleRegion>(region.start,region));
-        this.minMap.push(new Pair<number,VisibleRegion>(region.end,region));
+        this.maxMap.push(new Pair<number,VisibleRegion>(region.end,region));
     }
 
     addVisibleRegionByCoordinates(start:number, end: number) {
@@ -68,7 +65,7 @@ export default class SequenceRegion {
         this.addVisibleRegion(region);
     }
 
-    projectValue(input: number) {
+    projectValue(input: number): number {
         if (this.minMap.empty() && this.maxMap.empty()) {
             return input;
         }
