@@ -4,6 +4,7 @@
 import SequenceRegion, {UNMAPPED_REGION} from '../src/projection/typescript/SequenceRegion';
 import { expect } from 'chai';
 import VisibleRegion from "../src/projection/typescript/VisibleRegion";
+import {TreeMap, Pair} from "tstl/lib/tstl";
 // if you used the '@types/mocha' method to install mocha type definitions, uncomment the following line
 // import 'mocha';
 describe('Build Sequence Region Function as a Default', () => {
@@ -32,16 +33,42 @@ describe('Build Sequence Region Function as a Default', () => {
     });
 });
 
+describe('Test floor / ceiling methods', function () {
+    it('we should be able to add count for a simple map',function () {
+        let minMap:TreeMap<number,VisibleRegion> = new TreeMap<number,VisibleRegion>();
+        let region1:VisibleRegion = new VisibleRegion(3,4);
+        let region2:VisibleRegion = new VisibleRegion(7,9);
+        minMap.push(new Pair<number,VisibleRegion>(3,region1));
+        minMap.push(new Pair<number,VisibleRegion>(7,region2));
+
+        expect(minMap.size(),'should have 2').to.eq(2);
+
+        console.log('floor key 4: '+ minMap.lower_bound(4).first);
+        console.log('floor ceiling 4: '+ minMap.upper_bound(4).first);
+
+        let iter = minMap.begin();
+        console.log(iter.next().first);
+        console.log(iter.next().first);
+
+        expect(minMap.lower_bound(4).first,'to have the proper lower bound').to.eq(3);
+        expect(minMap.upper_bound(5).first,'to have the proper upper bound').to.eq(7);
+    });
+});
+
 describe('Overlapping ProjectedRegions should be the union', () => {
     it('Should build a sequence region', () => {
         let start = 0 ;
         let end = 100 ;
         let name = 'chr1';
         const region = new SequenceRegion(name,start,end);
+
+        region.clearVisibleRegions(); // TODO: remove this when we properly introduce replace
         region.addVisibleRegionByCoordinates(0,2) ;
         region.addVisibleRegionByCoordinates(4,6) ;
         region.addVisibleRegionByCoordinates(8,9) ;
 
+        expect(region.minMap.size(),'minMap should be correct').to.equal(3);
+        expect(region.maxMap.size(),'maxMap should be correct').to.equal(3);
         expect(region.projectValue(0)).to.equal(0);
         expect(region.projectValue(1)).to.equal(1);
         expect(region.projectValue(2)).to.equal(2);
