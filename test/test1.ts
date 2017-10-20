@@ -5,53 +5,21 @@ import SequenceRegion, {UNMAPPED_REGION} from '../src/projection/typescript/Sequ
 import { expect } from 'chai';
 import VisibleRegion from "../src/projection/typescript/VisibleRegion";
 import {TreeMap, Pair} from "tstl/lib/tstl";
+import ExtendedTreeMap from "../src/projection/typescript/ExtendedTreeMap";
 // if you used the '@types/mocha' method to install mocha type definitions, uncomment the following line
 // import 'mocha';
-describe('Build Sequence Region Function as a Default', () => {
-    it('Should build a sequence region', () => {
-        let start = 0 ;
-        let end = 100 ;
-        let name = 'chr1';
-        const region = new SequenceRegion(name,start,end);
-        expect(region.start).to.equal(start);
-        expect(region.end).to.equal(end);
-        expect(region.name).to.equal(name);
-        expect(region.order).to.equal(0);
-        console.log(region.length +' -> ' + (end-start) );
-        expect(region.length).to.equal(end - start );
-        expect(region.minMap.size()).to.equal(1);
-        expect(region.maxMap.size()).to.equal(1);
 
-
-        let minRegion = region.minMap.find(start).value;
-        let maxRegion = region.maxMap.find(end).value;
-        expect(minRegion.second).to.equal(maxRegion.second);
-        expect(minRegion.second.start).to.equal(start);
-        expect(minRegion.second.end).to.equal(end);
-        expect(minRegion.second.startLabel).to.equal(maxRegion.second.startLabel);
-        expect(minRegion.second.endLabel).to.equal(maxRegion.second.endLabel);
-    });
-});
-
-describe('Test floor / ceiling methods', function () {
-    it('we should be able to add count for a simple map',function () {
-        let minMap:TreeMap<number,VisibleRegion> = new TreeMap<number,VisibleRegion>();
+describe('ExtendedTreeMap tests', () => {
+    it('ExtendedTreeMap, floor', () => {
+        let map:ExtendedTreeMap<number,VisibleRegion> = new ExtendedTreeMap();
         let region1:VisibleRegion = new VisibleRegion(3,4);
         let region2:VisibleRegion = new VisibleRegion(7,9);
-        minMap.push(new Pair<number,VisibleRegion>(3,region1));
-        minMap.push(new Pair<number,VisibleRegion>(7,region2));
+        map.insert(new Pair<number,VisibleRegion>(3,region1));
+        map.insert(new Pair<number,VisibleRegion>(7,region2));
 
-        expect(minMap.size(),'should have 2').to.eq(2);
 
-        console.log('floor key 4: '+ minMap.lower_bound(4).first);
-        console.log('floor ceiling 4: '+ minMap.upper_bound(4).first);
-
-        let iter = minMap.begin();
-        console.log(iter.next().first);
-        console.log(iter.next().first);
-
-        expect(minMap.lower_bound(4).first,'to have the proper lower bound').to.eq(3);
-        expect(minMap.upper_bound(5).first,'to have the proper upper bound').to.eq(7);
+    });
+    it('ExtendedTreeMap, ceil', () => {
     });
 });
 
@@ -110,3 +78,53 @@ describe('Overlapping ProjectedRegions should be the union', () => {
 
     });
 });
+
+
+describe('Build Sequence Region Function as a Default', () => {
+    it('Should build a sequence region', () => {
+        let start = 0 ;
+        let end = 100 ;
+        let name = 'chr1';
+        const region = new SequenceRegion(name,start,end);
+        expect(region.start).to.equal(start);
+        expect(region.end).to.equal(end);
+        expect(region.name).to.equal(name);
+        expect(region.order).to.equal(0);
+        console.log(region.length +' -> ' + (end-start) );
+        expect(region.length).to.equal(end - start );
+        expect(region.minMap.size()).to.equal(1);
+        expect(region.maxMap.size()).to.equal(1);
+
+
+        let minRegion = region.minMap.find(start).value;
+        let maxRegion = region.maxMap.find(end).value;
+        expect(minRegion.second).to.equal(maxRegion.second);
+        expect(minRegion.second.start).to.equal(start);
+        expect(minRegion.second.end).to.equal(end);
+        expect(minRegion.second.startLabel).to.equal(maxRegion.second.startLabel);
+        expect(minRegion.second.endLabel).to.equal(maxRegion.second.endLabel);
+    });
+});
+
+describe('Test floor / ceiling methods', function () {
+    it('we should be able to add count for a simple map',function () {
+        let minMap:TreeMap<number,VisibleRegion> = new TreeMap<number,VisibleRegion>();
+        let region1:VisibleRegion = new VisibleRegion(3,4);
+        let region2:VisibleRegion = new VisibleRegion(7,9);
+        minMap.push(new Pair<number,VisibleRegion>(3,region1));
+        minMap.push(new Pair<number,VisibleRegion>(7,region2));
+
+        expect(minMap.size(),'should have 2').to.eq(2);
+
+        console.log('floor key 4: '+ minMap.lower_bound(4).first);
+        console.log('floor ceiling 4: '+ minMap.upper_bound(4).first);
+
+        let iter = minMap.begin();
+        console.log(iter.next().first);
+        console.log(iter.next().first);
+
+        expect(minMap.lower_bound(4).first,'to have the proper lower bound').to.eq(3);
+        expect(minMap.upper_bound(5).first,'to have the proper upper bound').to.eq(7);
+    });
+});
+
