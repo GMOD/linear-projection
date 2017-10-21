@@ -5,23 +5,23 @@ import SequenceRegion, {UNMAPPED_REGION} from '../src/projection/typescript/Sequ
 import { expect } from 'chai';
 import VisibleRegion from "../src/projection/typescript/VisibleRegion";
 import {TreeMap, Pair} from "tstl/lib/tstl";
-import ExtendedTreeMap from "../src/projection/typescript/ExtendedTreeMap";
+// import ExtendedTreeMap from "../src/projection/typescript/ExtendedTreeMap";
 // if you used the '@types/mocha' method to install mocha type definitions, uncomment the following line
 // import 'mocha';
 
-describe('ExtendedTreeMap tests', () => {
-    it('ExtendedTreeMap, floor', () => {
-        let map:ExtendedTreeMap<number,VisibleRegion> = new ExtendedTreeMap();
-        let region1:VisibleRegion = new VisibleRegion(3,4);
-        let region2:VisibleRegion = new VisibleRegion(7,9);
-        map.insert(new Pair<number,VisibleRegion>(3,region1));
-        map.insert(new Pair<number,VisibleRegion>(7,region2));
-
-
-    });
-    it('ExtendedTreeMap, ceil', () => {
-    });
-});
+// describe('ExtendedTreeMap tests', () => {
+//     it('ExtendedTreeMap, floor', () => {
+//         let map:ExtendedTreeMap<number,VisibleRegion> = new ExtendedTreeMap();
+//         let region1:VisibleRegion = new VisibleRegion(3,4);
+//         let region2:VisibleRegion = new VisibleRegion(7,9);
+//         map.insert(new Pair<number,VisibleRegion>(3,region1));
+//         map.insert(new Pair<number,VisibleRegion>(7,region2));
+//
+//
+//     });
+//     it('ExtendedTreeMap, ceil', () => {
+//     });
+// });
 
 describe('Overlapping ProjectedRegions should be the union', () => {
     it('Should build a sequence region', () => {
@@ -35,8 +35,8 @@ describe('Overlapping ProjectedRegions should be the union', () => {
         region.addVisibleRegionByCoordinates(4,6) ;
         region.addVisibleRegionByCoordinates(8,9) ;
 
-        expect(region.minMap.size(),'minMap should be correct').to.equal(3);
-        expect(region.maxMap.size(),'maxMap should be correct').to.equal(3);
+        expect(region.regions.length,'minMap should be correct').to.equal(3);
+        expect(region.regions.length,'maxMap should be correct').to.equal(3);
         expect(region.projectValue(0)).to.equal(0);
         expect(region.projectValue(1)).to.equal(1);
         expect(region.projectValue(2)).to.equal(2);
@@ -92,12 +92,14 @@ describe('Build Sequence Region Function as a Default', () => {
         expect(region.order).to.equal(0);
         console.log(region.length +' -> ' + (end-start) );
         expect(region.length).to.equal(end - start );
-        expect(region.minMap.size()).to.equal(1);
-        expect(region.maxMap.size()).to.equal(1);
+        expect(region.regions.length).to.equal(1);
+        expect(region.regions.length).to.equal(1);
 
 
-        let minRegion = region.minMap.find(start).value;
-        let maxRegion = region.maxMap.find(end).value;
+        // let minRegion = region.minMap.find(start).value;
+        // let maxRegion = region.maxMap.find(end).value;
+        let minRegion = region.find(start);
+        let maxRegion = region.find(end);
         expect(minRegion.second).to.equal(maxRegion.second);
         expect(minRegion.second.start).to.equal(start);
         expect(minRegion.second.end).to.equal(end);

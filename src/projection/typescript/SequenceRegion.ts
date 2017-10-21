@@ -4,11 +4,12 @@
  */
 import VisibleRegion from "./VisibleRegion";
 import {TreeMap, Pair} from "tstl/lib/tstl";
-import {assert} from "~chai/lib/Chai";
 
 export declare const UNMAPPED_REGION : -1 ;
 
-
+/**
+ * Combination of a DiscontuousRegion anda ProjectionSequence
+ */
 export default class SequenceRegion {
 
     // projection from X -> X'
@@ -17,6 +18,9 @@ export default class SequenceRegion {
 
     minMap:TreeMap<number,VisibleRegion> = new TreeMap<number,VisibleRegion>();
     maxMap:TreeMap<number,VisibleRegion> = new TreeMap<number,VisibleRegion>();
+
+   regions:Array<VisibleRegion> = new Array<VisibleRegion>();
+
 
     constructor(name: string, start: number, end: number) {
         this.name = name ;
@@ -58,8 +62,11 @@ export default class SequenceRegion {
 
 
         // TODO: remove in favor of the method below
-        this.minMap.insert(new Pair<number,VisibleRegion>(region.start,region));
-        this.maxMap.insert(new Pair<number,VisibleRegion>(region.end,region));
+        // this.minMap.insert(new Pair<number,VisibleRegion>(region.start,region));
+        // this.maxMap.insert(new Pair<number,VisibleRegion>(region.end,region));
+
+
+        this.regions.push(region);
 
 //         let min = region.start ;
 //         let max = region.end ;
@@ -284,5 +291,39 @@ export default class SequenceRegion {
     clearVisibleRegions() {
         this.minMap.clear();
         this.maxMap.clear();
+        // delete this.regions;
+        this.regions = new Array<VisibleRegion>()
+    }
+
+    sort(){
+        this.regions = this.regions.sort((a, b) => {
+            if (a.start < b.start) {
+                return -1;
+            }
+            else
+            if (a.start < b.start) {
+                return 1;
+            }
+
+            return 0
+        });
+    }
+
+    find(input: number) {
+        this.sort();
+
+        if(this.regions.length==0 || input < this.regions.length) {
+            return UNMAPPED_REGION;
+        }
+
+        for(let regionIndex in this.regions){
+            let region = this.regions[regionIndex];
+            if(input >= region.start && input <= region.end){
+                return region ;
+            }
+        }
+
+        return UNMAPPED_REGION;
+
     }
 }

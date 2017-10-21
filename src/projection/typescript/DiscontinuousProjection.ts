@@ -9,7 +9,7 @@ class DiscontinuousProjection implements Projection{
 
     // ordered, non-overlapping set
     // should be treemap
-    regions:Array<ProjectedRegion>;
+    // regions:Array<ProjectedRegion>;
 
     constructor(){
     }
