@@ -5,39 +5,39 @@
 import VisibleRegion from "./VisibleRegion";
 import {TreeMap, Pair} from "tstl/lib/tstl";
 
-export declare const UNMAPPED_REGION : -1 ;
+export declare const UNMAPPED_REGION: -1;
 
 /**
  * Combination of a DiscontuousRegion anda ProjectionSequence
  */
 export default class SequenceRegion {
-    isSorted: any = false ;
+    isSorted: any = false;
 
     // projection from X -> X'
     // TreeMap<number, Coordinate> minMap = new TreeMap<>();
     // TreeMap<number, Coordinate> maxMap = new TreeMap<>();
 
-    minMap:TreeMap<number,VisibleRegion> = new TreeMap<number,VisibleRegion>();
-    maxMap:TreeMap<number,VisibleRegion> = new TreeMap<number,VisibleRegion>();
+    minMap: TreeMap<number, VisibleRegion> = new TreeMap<number, VisibleRegion>();
+    maxMap: TreeMap<number, VisibleRegion> = new TreeMap<number, VisibleRegion>();
 
-   regions:Array<VisibleRegion> = new Array<VisibleRegion>();
+    regions: Array<VisibleRegion> = new Array<VisibleRegion>();
 
 
     constructor(name: string, start: number, end: number) {
-        this.name = name ;
-        this.start = start ;
-        this.end = end ;
+        this.name = name;
+        this.start = start;
+        this.end = end;
 
         this.applyDefaults();
     }
 
     private applyDefaults() {
-        this.visibleStartBp = this.start ;
-        this.visibleEndBp = this.end ;
-        this.length = this.end - this.start ;
-        this.order = 0 ;
+        this.visibleStartBp = this.start;
+        this.visibleEndBp = this.end;
+        this.length = this.end - this.start;
+        this.order = 0;
 
-        this.addVisibleRegionByCoordinates(this.start,this.end);
+        this.addVisibleRegionByCoordinates(this.start, this.end);
     }
 
     // projection: DiscontinuousProjection;
@@ -227,20 +227,19 @@ export default class SequenceRegion {
 //         }
 
 
-
     }
 
-    addVisibleRegionByCoordinates(start:number, end: number) {
-        let region = new VisibleRegion(start,end);
+    addVisibleRegionByCoordinates(start: number, end: number) {
+        let region = new VisibleRegion(start, end);
         this.addVisibleRegion(region);
     }
 
-    isEmpty():boolean{
-        return (this.regions == null || this.regions.length ==0 );
+    isEmpty(): boolean {
+        return (this.regions == null || this.regions.length == 0 );
     }
 
     projectValue(input: number): number {
-        if (this.isEmpty() ) {
+        if (this.isEmpty()) {
             return input;
         }
 
@@ -249,7 +248,7 @@ export default class SequenceRegion {
         }
 
         // let floorMinKey:number = this.minMap.lower_bound(input).next().first;
-        let floorMinKey:number = this.getFloorMin(input) ;
+        let floorMinKey: number = this.getFloorMin(input);
         // let ceilMinKey = this.minMap.upper_bound(input).next().first;
         let ceilMinKey = this.getCeilMin(input);
 
@@ -288,7 +287,7 @@ export default class SequenceRegion {
         }
 
         // if we are inbetween a ceiling max and floor min, then we are in a viable block
-        if (ceilMinKey!=null && input > floorMinKey && input < ceilMaxKey && ceilMinKey >= ceilMaxKey) {
+        if (ceilMinKey != null && input > floorMinKey && input < ceilMaxKey && ceilMinKey >= ceilMaxKey) {
             return input - floorMinKey + this.projectValue(floorMinKey);
         }
 
@@ -304,64 +303,98 @@ export default class SequenceRegion {
         this.regions = new Array<VisibleRegion>()
     }
 
-    checkSort(){
-        if(!this.isSorted){
+    checkSort() {
+        if (!this.isSorted) {
             this.sort();
         }
+        return this.isSorted;
     }
 
-    sort(){
+    sort() {
         this.regions = this.regions.sort((a, b) => {
             if (a.start < b.start) {
                 return -1;
             }
-            else
-            if (a.start < b.start) {
+            else if (a.start > b.start) {
                 return 1;
             }
 
             return 0
         });
-        this.isSorted = true ;
+        this.isSorted = true;
     }
 
     find(input: number) {
         this.sort();
 
-        if(this.regions.length==0 || input < this.regions.length) {
+        if (this.regions.length == 0 || input < this.regions.length) {
             return UNMAPPED_REGION;
         }
 
-        for(let regionIndex in this.regions){
+        for (let regionIndex in this.regions) {
             let region = this.regions[regionIndex];
-            if(input >= region.start && input <= region.end){
-                return region ;
+            if (input >= region.start && input <= region.end) {
+                return region;
             }
         }
 
         return UNMAPPED_REGION;
     }
 
-    getFloorMin(input: number) {
-       if(this.isEmpty())  return UNMAPPED_REGION;
-       this.checkSort();
+    canSort():boolean{
+        return !this.isEmpty() && this.checkSort();
     }
 
-    getCeilMin(input: number) {
-        if(this.isEmpty())  return UNMAPPED_REGION;
-        this.checkSort();
+    getFloorMin(input: number) {
+        if (!this.canSort()) return UNMAPPED_REGION;
 
+        let returnValue:number = UNMAPPED_REGION;
+        for (let region of this.regions) {
+            if (region.start <= input){
+                returnValue = region.start ;
+            }
+            else{
+                return returnValue ;
+            }
+        }
+        return returnValue ;
     }
 
     getFloorMax(input: number) {
-        if(this.isEmpty())  return UNMAPPED_REGION;
-        this.checkSort();
+        if (!this.canSort()) return UNMAPPED_REGION;
 
+        let returnValue:number = UNMAPPED_REGION;
+        for (let region of this.regions) {
+            if (region.end <= input){
+                returnValue = region.end ;
+            }
+            else{
+                return returnValue ;
+            }
+        }
+        return returnValue ;
+    }
+
+    getCeilMin(input: number) {
+        if (!this.canSort()) return UNMAPPED_REGION;
+
+        for (let region of this.regions) {
+            if (region.start >= input){
+                return region.start ;
+            }
+        }
+        return UNMAPPED_REGION;
     }
 
     getCeilMax(input: number) {
-        if(this.isEmpty())  return UNMAPPED_REGION;
-        this.checkSort();
+        if (!this.canSort()) return UNMAPPED_REGION;
+
+        for (let region of this.regions) {
+            if (region.end>= input){
+                return region.end;
+            }
+        }
+        return UNMAPPED_REGION;
 
     }
 

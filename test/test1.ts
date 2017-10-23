@@ -1,10 +1,10 @@
 
 // from MultiSequenceProjectionSpec
 
-import SequenceRegion, {UNMAPPED_REGION} from '../src/projection/typescript/SequenceRegion';
 import { expect } from 'chai';
 import VisibleRegion from "../src/projection/typescript/VisibleRegion";
 import {TreeMap, Pair} from "tstl/lib/tstl";
+import SequenceRegion, {UNMAPPED_REGION} from "../src/projection/typescript/SequenceRegion";
 // import ExtendedTreeMap from "../src/projection/typescript/ExtendedTreeMap";
 // if you used the '@types/mocha' method to install mocha type definitions, uncomment the following line
 // import 'mocha';
@@ -28,32 +28,83 @@ describe('SequenceRegion Sorted test', () => {
     let end = 100 ;
     let name = 'chr1';
     let region = new SequenceRegion(name,start,end);
+    region.clearVisibleRegions(); // TODO: remove this when we properly introduce replace
     region.addVisibleRegionByCoordinates(5,8) ;
     region.addVisibleRegionByCoordinates(1,3) ;
     region.addVisibleRegionByCoordinates(15,22) ;
+    region.checkSort();
     it('SequenceRegion Sorted', () => {
-        region.checkSort();
         expect(region.isSorted).to.equal(true);
         let v = -1 ;
         for(let r of region.regions){
-            console.log(r.start +' -> '+ v );
+            // console.log(r.start +' -> '+ v );
             expect(v).lessThan(r.start);
             v = r.start ;
         }
-
-
+    });
+    it('Find Floors Min', () => {
+        expect(region.getFloorMin(0)).to.eq(UNMAPPED_REGION);
+        expect(region.getFloorMin(1)).to.eq(1);
+        expect(region.getFloorMin(3)).to.eq(1);
+        expect(region.getFloorMin(4)).to.eq(1);
+        expect(region.getFloorMin(5)).to.eq(5);
+        expect(region.getFloorMin(7)).to.eq(5);
+        expect(region.getFloorMin(8)).to.eq(5);
+        expect(region.getFloorMin(14)).to.eq(5);
+        expect(region.getFloorMin(15)).to.eq(15);
+        expect(region.getFloorMin(22)).to.eq(15);
+        expect(region.getFloorMin(23)).to.eq(15);
+    });
+    it('Find Floor Max', () => {
+        expect(region.getFloorMax(0)).to.eq(UNMAPPED_REGION);
+        expect(region.getFloorMax(1)).to.eq(UNMAPPED_REGION);
+        expect(region.getFloorMax(3)).to.eq(3);
+        expect(region.getFloorMax(4)).to.eq(3);
+        expect(region.getFloorMax(5)).to.eq(3);
+        expect(region.getFloorMax(7)).to.eq(3);
+        expect(region.getFloorMax(8)).to.eq(8);
+        expect(region.getFloorMax(14)).to.eq(8);
+        expect(region.getFloorMax(15)).to.eq(8);
+        expect(region.getFloorMax(22)).to.eq(22);
+        expect(region.getFloorMax(23)).to.eq(22);
+    });
+    it('Find Ceils Min', () => {
+        expect(region.getCeilMin(0)).to.eq(1);
+        expect(region.getCeilMin(1)).to.eq(1);
+        expect(region.getCeilMin(3)).to.eq(5);
+        expect(region.getCeilMin(4)).to.eq(5);
+        expect(region.getCeilMin(5)).to.eq(5);
+        expect(region.getCeilMin(7)).to.eq(15);
+        expect(region.getCeilMin(8)).to.eq(15);
+        expect(region.getCeilMin(14)).to.eq(15);
+        expect(region.getCeilMin(15)).to.eq(15);
+        expect(region.getCeilMin(22)).to.eq(UNMAPPED_REGION);
+        expect(region.getCeilMin(23)).to.eq(UNMAPPED_REGION);
+    });
+    it('Find Ceil Max', () => {
+        expect(region.getCeilMax(0)).to.eq(3);
+        expect(region.getCeilMax(1)).to.eq(3);
+        expect(region.getCeilMax(3)).to.eq(3);
+        expect(region.getCeilMax(4)).to.eq(8);
+        expect(region.getCeilMax(5)).to.eq(8);
+        expect(region.getCeilMax(7)).to.eq(8);
+        expect(region.getCeilMax(8)).to.eq(8);
+        expect(region.getCeilMax(14)).to.eq(22);
+        expect(region.getCeilMax(15)).to.eq(22);
+        expect(region.getCeilMax(22)).to.eq(22);
+        expect(region.getCeilMax(23)).to.eq(UNMAPPED_REGION);
     });
 });
 
-describe('SequenceRegion Tests ', () => {
-    let start = 0 ;
-    let end = 100 ;
-    let name = 'chr1';
-    const region = new SequenceRegion(name,start,end);
-    region.addVisibleRegionByCoordinates(4,6) ;
-    it('SequenceRegion Tests, floor', () => {
-    });
-});
+// describe('SequenceRegion Tests ', () => {
+//     let start = 0 ;
+//     let end = 100 ;
+//     let name = 'chr1';
+//     const region = new SequenceRegion(name,start,end);
+//     region.addVisibleRegionByCoordinates(4,6) ;
+//     it('SequenceRegion Tests, floor', () => {
+//     });
+// });
 
 describe('Overlapping ProjectedRegions should be the union', () => {
     it('Should build a sequence region', () => {
@@ -122,7 +173,6 @@ describe('Build Sequence Region Function as a Default', () => {
         expect(region.end).to.equal(end);
         expect(region.name).to.equal(name);
         expect(region.order).to.equal(0);
-        console.log(region.length +' -> ' + (end-start) );
         expect(region.length).to.equal(end - start );
         expect(region.regions.length).to.equal(1);
         expect(region.regions.length).to.equal(1);
