@@ -11,6 +11,7 @@ export declare const UNMAPPED_REGION : -1 ;
  * Combination of a DiscontuousRegion anda ProjectionSequence
  */
 export default class SequenceRegion {
+    isSorted: any = false ;
 
     // projection from X -> X'
     // TreeMap<number, Coordinate> minMap = new TreeMap<>();
@@ -234,8 +235,12 @@ export default class SequenceRegion {
         this.addVisibleRegion(region);
     }
 
+    isEmpty():boolean{
+        return (this.regions == null || this.regions.length ==0 );
+    }
+
     projectValue(input: number): number {
-        if (this.minMap.empty() && this.maxMap.empty()) {
+        if (this.isEmpty() ) {
             return input;
         }
 
@@ -243,11 +248,15 @@ export default class SequenceRegion {
             return UNMAPPED_REGION;
         }
 
-        let floorMinKey:number = this.minMap.lower_bound(input).next().first;
-        let ceilMinKey = this.minMap.upper_bound(input).next().first;
+        // let floorMinKey:number = this.minMap.lower_bound(input).next().first;
+        let floorMinKey:number = this.getFloorMin(input) ;
+        // let ceilMinKey = this.minMap.upper_bound(input).next().first;
+        let ceilMinKey = this.getCeilMin(input);
 
-        let floorMaxKey = this.maxMap.lower_bound(input).next().first;
-        let ceilMaxKey = this.maxMap.upper_bound(input).next().first;
+        // let floorMaxKey = this.maxMap.lower_bound(input).next().first;
+        let floorMaxKey = this.getFloorMax(input);
+        // let ceilMaxKey = this.maxMap.upper_bound(input).next().first;
+        let ceilMaxKey = this.getCeilMax(input);
 
         if (floorMinKey == null || ceilMaxKey == null) {
             return UNMAPPED_REGION;
@@ -295,6 +304,12 @@ export default class SequenceRegion {
         this.regions = new Array<VisibleRegion>()
     }
 
+    checkSort(){
+        if(!this.isSorted){
+            this.sort();
+        }
+    }
+
     sort(){
         this.regions = this.regions.sort((a, b) => {
             if (a.start < b.start) {
@@ -307,6 +322,7 @@ export default class SequenceRegion {
 
             return 0
         });
+        this.isSorted = true ;
     }
 
     find(input: number) {
@@ -324,6 +340,29 @@ export default class SequenceRegion {
         }
 
         return UNMAPPED_REGION;
+    }
+
+    getFloorMin(input: number) {
+       if(this.isEmpty())  return UNMAPPED_REGION;
+       this.checkSort();
+    }
+
+    getCeilMin(input: number) {
+        if(this.isEmpty())  return UNMAPPED_REGION;
+        this.checkSort();
 
     }
+
+    getFloorMax(input: number) {
+        if(this.isEmpty())  return UNMAPPED_REGION;
+        this.checkSort();
+
+    }
+
+    getCeilMax(input: number) {
+        if(this.isEmpty())  return UNMAPPED_REGION;
+        this.checkSort();
+
+    }
+
 }
