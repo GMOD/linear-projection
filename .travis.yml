@@ -1,5 +1,13 @@
 language: node_js
 node_js:
-  - "iojs"
-  - "8"
-  - "7"
+- iojs
+- '8'
+- '7'
+deploy:
+  provider: npm
+  email: ndunn@me.com
+  api_key:
+    secure: 06/UWChZi389fx2qXVYfQUsXFpw1DYhoFINO55dbLmcP5L46tVDPelKvVkh/30lKMTMVL19SvjglMqal8t1k9wiSnmCYrpZRyddAcM3GLu2SaqY+gyqjr/ZW+7FJeAGQ64y4RIC+JmgoLBl6DMMqRPG7+J8y3T5kubd9hqqvkzdQL3/JOEb7Rggu64hJ8xGmvJowmLd6cA/zgm6um/rD5/lWC/ZXRLN9nzQmQ2ZjGsebvS0Z7m9T1bloLbG0XjW7XV602KTN69CveHmuS3RcmGw8EFDpkMBTUZ3fDhXteK7MUUzP+E+OeLO2RRsxepSuU9Aq9rZDQ+NFPuHMzhRbJufiJme2nagnAd1IXyNlWRwMRTlXlz7MrB51q86LT/tGFAiyZANqMbQdVZWdMHhW9FKIvFoUfUuIbKJ+JptEvJ/spYGOAIJF/oyjlp5iFjuYWf+WlgRY9xHXTx9KLkGdBx57aRZ7BVnXjlN8LfMV9ryiLY42lzMP2UUDnS1zhhfuxn1PhhjUhprvMoDrvxd3tQ09M45pgDzueHlVK6gVKQx4oNjxVWfBhyKDo5kf71VX6Rv8Q4PmRXvG8d3vlqHaeVM4fBmriu1X1gyMy9XuHDxllhd7l/diBmHpZTqePO6AAd9R9tLIJiSHOOzSleNz6v81+jekPHone8EEZBU7Otg=
+  on:
+    tags: true
+    repo: nathandunn/linear-projection
