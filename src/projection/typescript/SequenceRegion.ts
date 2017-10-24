@@ -238,6 +238,32 @@ export default class SequenceRegion {
         return (this.regions == null || this.regions.length == 0 );
     }
 
+    unProjectValue(input: number): number {
+
+        // Iterator<Long> minIterator = minMap.keySet().iterator();
+        // Iterator<Long> maxIterator = maxMap.keySet().iterator();
+        // Long min, max;
+
+//     // here we can assume that the input maps onto the current length
+        let currentLength = 0;
+        let bucketCount = 0;
+        let previousLength = 0;
+        let min, max;
+
+        for (let region of this.regions) {
+            min = region.start;
+            max = region.end;
+            currentLength += (max - min);
+            if (currentLength + bucketCount >= input) {
+                return min + input - previousLength - bucketCount;
+            }
+            previousLength += (max - min);
+            ++bucketCount;
+        }
+// }
+        return UNMAPPED_REGION;
+    }
+
     projectValue(input: number): number {
         if (this.isEmpty()) {
             return input;
@@ -341,46 +367,46 @@ export default class SequenceRegion {
         return UNMAPPED_REGION;
     }
 
-    canSort():boolean{
+    canSort(): boolean {
         return !this.isEmpty() && this.checkSort();
     }
 
     getFloorMin(input: number) {
         if (!this.canSort()) return UNMAPPED_REGION;
 
-        let returnValue:number = UNMAPPED_REGION;
+        let returnValue: number = UNMAPPED_REGION;
         for (let region of this.regions) {
-            if (region.start <= input){
-                returnValue = region.start ;
+            if (region.start <= input) {
+                returnValue = region.start;
             }
-            else{
-                return returnValue ;
+            else {
+                return returnValue;
             }
         }
-        return returnValue ;
+        return returnValue;
     }
 
     getFloorMax(input: number) {
         if (!this.canSort()) return UNMAPPED_REGION;
 
-        let returnValue:number = UNMAPPED_REGION;
+        let returnValue: number = UNMAPPED_REGION;
         for (let region of this.regions) {
-            if (region.end <= input){
-                returnValue = region.end ;
+            if (region.end <= input) {
+                returnValue = region.end;
             }
-            else{
-                return returnValue ;
+            else {
+                return returnValue;
             }
         }
-        return returnValue ;
+        return returnValue;
     }
 
     getCeilMin(input: number) {
         if (!this.canSort()) return UNMAPPED_REGION;
 
         for (let region of this.regions) {
-            if (region.start >= input){
-                return region.start ;
+            if (region.start >= input) {
+                return region.start;
             }
         }
         return UNMAPPED_REGION;
@@ -390,7 +416,7 @@ export default class SequenceRegion {
         if (!this.canSort()) return UNMAPPED_REGION;
 
         for (let region of this.regions) {
-            if (region.end>= input){
+            if (region.end >= input) {
                 return region.end;
             }
         }

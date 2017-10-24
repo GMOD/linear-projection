@@ -107,7 +107,7 @@ describe('SequenceRegion Sorted test', () => {
 // });
 
 describe('Overlapping ProjectedRegions should be the union', () => {
-    it('Should build a sequence region', () => {
+    it('Should project value', () => {
         let start = 0 ;
         let end = 100 ;
         let name = 'chr1';
@@ -124,13 +124,13 @@ describe('Overlapping ProjectedRegions should be the union', () => {
         expect(region.projectValue(1)).to.equal(1);
         expect(region.projectValue(2)).to.equal(2);
         expect(region.projectValue(3)).to.equal(UNMAPPED_REGION);
-        // expect(region.projectValue(4)).to.equal(3);
-        // expect(region.projectValue(5)).to.equal(4);
-        // expect(region.projectValue(6)).to.equal(5);
-        // expect(region.projectValue(7)).to.equal(UNMAPPED_REGION);
-        // expect(region.projectValue(8)).to.equal(6);
-        // expect(region.projectValue(9)).to.equal(7);
-        // expect(region.projectValue(10)).to.equal(UNMAPPED_REGION);
+        expect(region.projectValue(4)).to.equal(3);
+        expect(region.projectValue(5)).to.equal(4);
+        expect(region.projectValue(6)).to.equal(5);
+        expect(region.projectValue(7)).to.equal(UNMAPPED_REGION);
+        expect(region.projectValue(8)).to.equal(6);
+        expect(region.projectValue(9)).to.equal(7);
+        expect(region.projectValue(10)).to.equal(UNMAPPED_REGION);
 // )
 //         // in-phase)
 //         expect(new Coordinate(3,4) == region.projectCoordinate(4, 5))
@@ -150,14 +150,14 @@ describe('Overlapping ProjectedRegions should be the union', () => {
 //         expect(new Coordinate(1,  7) == region.projectCoordinate(1, 9))
 // )
 //         // test reverse values)
-//         expect(0).to.equal( region.unProjectValue(0))
-//         expect(1).to.equal( region.unProjectValue(1))
-//         expect(2).to.equal( region.unProjectValue(2))
-//         expect(4).to.equal( region.unProjectValue(3))
-//         expect(5).to.equal( region.unProjectValue(4))
-//         expect(6).to.equal( region.unProjectValue(5))
-//         expect(8).to.equal( region.unProjectValue(6))
-//         expect(9).to.equal( region.unProjectValue(7))
+        expect(0).to.equal( region.unProjectValue(0));
+        expect(1).to.equal( region.unProjectValue(1));
+        expect(2).to.equal( region.unProjectValue(2));
+        expect(4).to.equal( region.unProjectValue(3));
+        expect(5).to.equal( region.unProjectValue(4));
+        expect(6).to.equal( region.unProjectValue(5));
+        expect(8).to.equal( region.unProjectValue(6));
+        expect(9).to.equal( region.unProjectValue(7));
 
     });
 });
